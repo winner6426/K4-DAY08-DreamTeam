@@ -26,8 +26,17 @@ và chỉ dùng nguồn công khai/được phép chia sẻ.
 """
 
 from pathlib import Path
+import sys
+
+from bs4 import BeautifulSoup
+from fpdf import FPDF
+from fpdf.enums import WrapMode
+
+if hasattr(sys.stdout, "reconfigure"):
+    sys.stdout.reconfigure(encoding="utf-8")
 
 DATA_DIR = Path(__file__).parent.parent / "data" / "landing" / "legal"
+FONT_PATH = Path(r"C:\Windows\Fonts\arial.ttf")
 
 
 def setup_directory():
@@ -41,13 +50,49 @@ def setup_directory():
 #
 # Ví dụ nếu có direct link:
 #
-# import requests
-#
-# def download_file(url: str, filename: str):
-#     response = requests.get(url)
-#     filepath = DATA_DIR / filename
-#     filepath.write_bytes(response.content)
-#     print(f"✓ Đã tải: {filepath}")
+import requests
+
+def download_file(url: str, filename: str):
+    response = requests.get(url, timeout=30)
+    response.raise_for_status()
+    filepath = DATA_DIR / filename
+    filepath.write_bytes(response.content)
+    print(f"✓ Đã tải: {filepath}")
+def html_to_pdf(input_path: Path, output_path: Path) -> None:
+    """Convert a browser-saved HTML file to a Vietnamese Unicode PDF."""
+    soup = BeautifulSoup(input_path.read_bytes(), "html.parser")
+
+    for tag in soup(["script", "style", "noscript", "template", "svg"]):
+        tag.decompose()
+
+    lines = [line.strip() for line in soup.get_text("\n").splitlines() if line.strip()]
+    text = "\n".join(lines)
+    if not text:
+        raise ValueError(f"No readable text found in {input_path.name}")
+    if not FONT_PATH.exists():
+        raise FileNotFoundError(f"Unicode font not found: {FONT_PATH}")
+
+    pdf = FPDF()
+    pdf.set_auto_page_break(auto=True, margin=15)
+    pdf.add_page()
+    pdf.add_font("ArialUnicode", fname=str(FONT_PATH))
+    pdf.set_font("ArialUnicode", size=11)
+    pdf.set_title(input_path.name)
+    pdf.multi_cell(w=0, h=6, text=text, wrapmode=WrapMode.CHAR)
+    pdf.output(str(output_path))
+    print(f"Created PDF: {output_path}")
+
+
+def convert_saved_html_to_pdf() -> int:
+    """Convert extensionless HTML files in DATA_DIR to PDF."""
+    converted = 0
+    for input_path in sorted(DATA_DIR.iterdir()):
+        if input_path.is_file() and input_path.suffix == "" and input_path.stat().st_size > 0:
+            html_to_pdf(input_path, input_path.with_suffix(".pdf"))
+            converted += 1
+    return converted
+
+
 #
 # Nếu trang là HTML thuần (không phải PDF sẵn), có thể convert nội dung text
 # thành PDF đơn giản bằng thư viện fpdf2 (đã có trong requirements.txt).
@@ -55,3 +100,5 @@ def setup_directory():
 
 if __name__ == "__main__":
     setup_directory()
+    total = convert_saved_html_to_pdf()
+    print(f"Completed: converted {total} files to PDF.")

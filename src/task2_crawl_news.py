@@ -35,8 +35,20 @@ def setup_directory():
 
 # TODO: Điền danh sách URL bài viết cần crawl
 ARTICLE_URLS = [
-    # Ví dụ (trang công khai Shopee Vietnam):
-    # "https://help.shopee.vn/portal/4/article/...",
+    # Theo dõi tình trạng vận chuyển đơn hàng
+    "https://help.shopee.vn/portal/4/article/79215",
+
+    # Đổi phương thức thanh toán
+    "https://help.shopee.vn/portal/4/article/79128",
+
+    # Chuẩn bị bằng chứng trả hàng/hoàn tiền
+    "https://help.shopee.vn/portal/4/article/79467",
+
+    # Sản phẩm vận chuyển từ nước ngoài
+    "https://help.shopee.vn/portal/4/article/79654",
+
+    # Gửi yêu cầu trả hàng/hoàn tiền
+    "https://help.shopee.vn/portal/4/article/79233",
 ]
 
 
@@ -55,14 +67,14 @@ async def crawl_article(url: str) -> dict:
     from crawl4ai import AsyncWebCrawler
 
     # TODO: Implement crawling logic
-    # async with AsyncWebCrawler() as crawler:
-    #     result = await crawler.arun(url=url)
-    #     return {
-    #         "url": url,
-    #         "title": result.metadata.get("title", "Unknown"),
-    #         "date_crawled": datetime.now().isoformat(),
-    #         "content_markdown": result.markdown,
-    #     }
+    async with AsyncWebCrawler() as crawler:
+        result = await crawler.arun(url=url)
+        return {
+            "url": url,
+            "title": result.metadata.get("title", "Unknown"),
+            "date_crawled": datetime.now().isoformat(),
+            "content_markdown": result.markdown,
+        }
     raise NotImplementedError("Implement crawl_article")
 
 
@@ -77,7 +89,7 @@ async def crawl_all():
         # Lưu file JSON
         filename = f"article_{i:02d}.json"
         filepath = DATA_DIR / filename
-        filepath.write_text(json.dumps(article, ensure_ascii=False, indent=2))
+        filepath.write_text(json.dumps(article, ensure_ascii=False, indent=2), encoding = "utf-8")
         print(f"  ✓ Saved: {filepath}")
 
 

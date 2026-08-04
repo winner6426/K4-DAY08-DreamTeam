@@ -1,0 +1,23 @@
+# Sản Phẩm Được Vận Chuyển Từ Nước Ngoài Nghĩa Là Gì ? | Shopee Trung tâm trợ giúp
+
+**Source:** https://help.shopee.vn/portal/4/article/79654
+**Crawled:** 2026-08-04T13:31:22.492634
+
+---
+
+# Xin chào, Shopee có thể giúp gì cho bạn?
+## Sản Phẩm Được Vận Chuyển Từ Nước Ngoài Nghĩa Là Gì ?
+Sản phẩm vận chuyển từ nước ngoài: 
+  1. Được bán bởi Người bán không thuộc lãnh thổ Việt Nam.
+  2. Có gắn tag![image.png](https://fileproxycdn.cs.susercontent.com/api/v5/service/download/permanent/helpcenter-fe/4c2c923897574153a2ed6b8f6ef355e0.jpg) tại trang sản phẩm.
+
+
+  
+
+![Webp.net-gifmaker \(18\).gif](https://fileproxycdn.cs.susercontent.com/api/v5/service/download/permanent/helpcenter-fe/d9bcbfffc24541d89a75057e321d637c.jpg)
+  
+
+Xem thêm: [**Các Câu Hỏi Thường Gặp Về Mua Hàng Trên Shopee**](https://help.shopee.vn/vn/s/article/L%C3%A0m-th%E1%BA%BF-n%C3%A0o-%C4%91%E1%BB%83-tr%E1%BA%A3-gi%C3%A1-m%E1%BA%B7c-c%E1%BA%A3-gi%C3%A1-b%C3%A1n-s%E1%BA%A3n-ph%E1%BA%A9m-v%E1%BB%9Bi-Ng%C6%B0%E1%BB%9Di-b%C3%A1n-1542942315951?previousPage=other%20articles)
+Bạn có hài lòng với bài viết này?
+Hài lòng
+Không hài lòng
