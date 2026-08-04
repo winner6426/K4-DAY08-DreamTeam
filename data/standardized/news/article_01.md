@@ -1,10 +1,12 @@
 # [Thành viên mới] Cách theo dõi tình trạng vận chuyển của đơn hàng? | Shopee Trung tâm trợ giúp
 
 **Source:** https://help.shopee.vn/portal/4/article/79215
-**Crawled:** 2026-08-04T13:31:14.209548
+**Crawled:** 2026-08-04T15:41:03.427334
 
 ---
 
+![logo](https://fileproxycdn.cs.susercontent.com/api/v5/service/download/permanent/cs-saas/dd37a34565464ced95529006bd3e6c22.png)
+Trung tâm Hỗ trợ Shopee VN
 # Xin chào, Shopee có thể giúp gì cho bạn?
 ## [Thành viên mới] Cách theo dõi tình trạng vận chuyển của đơn hàng?
 Hướng dẫn theo dõi áp dụng cho**tất cả đơn hàng** (bao gồm đơn hàng trong nước và đơn hàng quốc tế)
@@ -36,3 +38,4 @@ Nhằm giúp Người mua dễ dàng tra cứu thông tin đơn hàng của mìn
 Bạn có hài lòng với bài viết này?
 Hài lòng
 Không hài lòng
+© 2021 Shopee. Tất cả các quyền được bảo lưu.

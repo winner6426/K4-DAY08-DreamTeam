@@ -1,7 +1,7 @@
 # [Trả hàng/ Hoàn tiền] Hướng dẫn gửi yêu cầu Trả hàng/ Hoàn tiền | Shopee Trung tâm trợ giúp
 
 **Source:** https://help.shopee.vn/portal/4/article/79233
-**Crawled:** 2026-08-04T13:31:25.385831
+**Crawled:** 2026-08-04T15:41:09.927033
 
 ---
 

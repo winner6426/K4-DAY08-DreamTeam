@@ -1,7 +1,7 @@
 # [Trả hàng/Hoàn tiền] Hướng dẫn chuẩn bị bằng chứng khi yêu cầu Trả hàng/ Hoàn tiền | Shopee Trung tâm trợ giúp
 
 **Source:** https://help.shopee.vn/portal/4/article/79467
-**Crawled:** 2026-08-04T13:31:19.691331
+**Crawled:** 2026-08-04T15:41:06.421439
 
 ---
 

@@ -18,8 +18,14 @@ Hướng dẫn:
 
 import json
 from pathlib import Path
+import sys
 
 from markitdown import MarkItDown
+
+
+# Windows terminals may default to cp1252, which cannot print Vietnamese or ✓.
+if hasattr(sys.stdout, "reconfigure"):
+    sys.stdout.reconfigure(encoding="utf-8")
 
 LANDING_DIR = Path(__file__).parent.parent / "data" / "landing"
 OUTPUT_DIR = Path(__file__).parent.parent / "data" / "standardized"
