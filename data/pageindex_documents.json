@@ -1,0 +1,24 @@
+{
+  "documents": [
+    {
+      "doc_id": "pi-cmseftavx000401qw5jdu80lh",
+      "name": "Chinh sach bao mat.pdf",
+      "path": "D:\\VinAI\\Lab\\DAY08_2A202602003_TranVanThang\\data\\landing\\legal\\Chinh sach bao mat.pdf"
+    },
+    {
+      "doc_id": "pi-cmseftcbz000701qwa5x1p5dh",
+      "name": "Chinh sach tra hang va hoan tien.pdf",
+      "path": "D:\\VinAI\\Lab\\DAY08_2A202602003_TranVanThang\\data\\landing\\legal\\Chinh sach tra hang va hoan tien.pdf"
+    },
+    {
+      "doc_id": "pi-cmseftdr2000801qwp7jz64nz",
+      "name": "Phuong thuc thanh toan.pdf",
+      "path": "D:\\VinAI\\Lab\\DAY08_2A202602003_TranVanThang\\data\\landing\\legal\\Phuong thuc thanh toan.pdf"
+    },
+    {
+      "doc_id": "pi-cmseftfam000c01qwfqbp39ea",
+      "name": "Quy dinh dang ban san pham.pdf",
+      "path": "D:\\VinAI\\Lab\\DAY08_2A202602003_TranVanThang\\data\\landing\\legal\\Quy dinh dang ban san pham.pdf"
+    }
+  ]
+}

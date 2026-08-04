@@ -25,6 +25,8 @@ Logic:
     điểm số giữa hai nhóm rồi chọn ngưỡng nằm giữa.
 """
 
+from concurrent.futures import ThreadPoolExecutor
+
 from .task5_semantic_search import semantic_search
 from .task6_lexical_search import lexical_search
 from .task7_reranking import rerank, rerank_rrf
@@ -77,7 +79,7 @@ def retrieve(
             'source': str  # 'hybrid' hoặc 'pageindex'
         }
     """
-    # TODO: Implement full retrieval pipeline
+    # Reference outline kept below to make the intended lab pipeline explicit.
     #
     # Step 1: Song song chạy semantic + lexical
     # dense_results = semantic_search(query, top_k=top_k * 2)
@@ -103,7 +105,59 @@ def retrieve(
     #         return fallback
     #
     # return final_results[:top_k]
-    raise NotImplementedError("Implement retrieve")
+    if top_k <= 0 or not query.strip():
+        return []
+
+    candidate_count = max(top_k * 2, top_k)
+
+    # Dense and sparse retrieval are independent, so run them concurrently.
+    # If one backend is temporarily unavailable, the other can still answer.
+    with ThreadPoolExecutor(max_workers=2) as executor:
+        dense_future = executor.submit(semantic_search, query, candidate_count)
+        sparse_future = executor.submit(lexical_search, query, candidate_count)
+        try:
+            dense_results = dense_future.result()
+        except Exception as exc:
+            print(f"  Warning: semantic search failed: {exc}")
+            dense_results = []
+        try:
+            sparse_results = sparse_future.result()
+        except Exception as exc:
+            print(f"  Warning: lexical search failed: {exc}")
+            sparse_results = []
+
+    # Keep this score separate: RRF scores represent rank agreement, not
+    # semantic confidence, and therefore must not control fallback.
+    best_dense_score = float(dense_results[0].get("score", 0.0)) if dense_results else 0.0
+
+    merged = rerank_rrf(
+        [dense_results, sparse_results],
+        top_k=candidate_count,
+    )
+    for item in merged:
+        item["source"] = "hybrid"
+        item.setdefault("metadata", {})
+
+    if use_reranking and merged and RERANK_METHOD != "rrf":
+        final_results = rerank(
+            query,
+            merged,
+            top_k=top_k,
+            method=RERANK_METHOD,
+        )
+        for item in final_results:
+            item["source"] = "hybrid"
+    else:
+        # The merge above has already applied RRF; applying it again to one
+        # list would overwrite the meaningful fused scores.
+        final_results = merged[:top_k]
+
+    if best_dense_score < score_threshold:
+        fallback = pageindex_search(query, top_k=top_k)
+        if fallback:
+            return fallback[:top_k]
+
+    return final_results[:top_k]
 
 
 if __name__ == "__main__":
