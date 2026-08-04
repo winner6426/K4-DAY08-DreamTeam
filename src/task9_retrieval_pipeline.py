@@ -31,6 +31,7 @@ from .task5_semantic_search import semantic_search
 from .task6_lexical_search import lexical_search
 from .task7_reranking import rerank, rerank_rrf
 from .task8_pageindex_vectorless import pageindex_search
+from .task4_chunking_indexing import get_embedding_model
 
 
 # =============================================================================
@@ -110,6 +111,13 @@ def retrieve(
 
     candidate_count = max(top_k * 2, top_k)
 
+    # Initialise the heavyweight embedding stack before starting parallel
+    # retrieval. This avoids first-import races in NumPy/transformers on Windows.
+    try:
+        get_embedding_model()
+    except Exception as exc:
+        print(f"  Warning: embedding model unavailable: {exc}")
+
     # Dense and sparse retrieval are independent, so run them concurrently.
     # If one backend is temporarily unavailable, the other can still answer.
     with ThreadPoolExecutor(max_workers=2) as executor:
@@ -153,7 +161,13 @@ def retrieve(
         final_results = merged[:top_k]
 
     if best_dense_score < score_threshold:
-        fallback = pageindex_search(query, top_k=top_k)
+        # PageIndex is optional. A missing SDK/key/network must not break the
+        # local hybrid answer path.
+        try:
+            fallback = pageindex_search(query, top_k=top_k)
+        except Exception as exc:
+            print(f"  Warning: PageIndex fallback unavailable: {exc}")
+            fallback = []
         if fallback:
             return fallback[:top_k]
 

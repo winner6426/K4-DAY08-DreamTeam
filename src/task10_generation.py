@@ -102,6 +102,20 @@ def _get_llm_client():
     return None, None
 
 
+def _local_cited_answer(chunks: list[dict]) -> str:
+    """Provide a transparent, source-grounded fallback when no LLM is configured."""
+    excerpts = []
+    for chunk in chunks[:2]:
+        metadata = chunk.get("metadata") or {}
+        source = Path(str(metadata.get("source", "Nguồn"))).stem
+        content = " ".join(str(chunk.get("content", "")).split())
+        if content:
+            excerpts.append(f"{content[:500]} [{source}, không rõ năm]")
+    if not excerpts:
+        return INSUFFICIENT_EVIDENCE_ANSWER
+    return "Dưới đây là các đoạn thông tin liên quan từ nguồn tham khảo:\n\n" + "\n\n".join(excerpts)
+
+
 def generate_with_citation(query: str, top_k: int = TOP_K) -> dict:
     """Run retrieval, reorder context, and generate a cited Vietnamese answer."""
     if top_k <= 0 or not query.strip():
@@ -134,13 +148,10 @@ def generate_with_citation(query: str, top_k: int = TOP_K) -> dict:
     client, model = _get_llm_client()
     if client is None:
         return {
-            "answer": (
-                "Chưa thể sinh câu trả lời vì chưa cấu hình "
-                "OPENROUTER_API_KEY hoặc OPENAI_API_KEY."
-            ),
+            "answer": _local_cited_answer(reordered),
             "sources": reordered,
             "retrieval_source": retrieval_source,
-            "generation_error": "missing_api_key",
+            "generation_error": "missing_api_key_using_extractive_fallback",
         }
 
     try:
