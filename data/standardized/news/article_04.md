@@ -1,7 +1,7 @@
 # Sản Phẩm Được Vận Chuyển Từ Nước Ngoài Nghĩa Là Gì ? | Shopee Trung tâm trợ giúp
 
 **Source:** https://help.shopee.vn/portal/4/article/79654
-**Crawled:** 2026-08-04T13:31:22.492634
+**Crawled:** 2026-08-04T15:41:07.984375
 
 ---
 
