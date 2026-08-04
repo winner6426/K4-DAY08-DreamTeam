@@ -1,17 +1,77 @@
 [
   {
-    "question": "Người mua có thể yêu cầu trả hàng/hoàn tiền trong thời hạn bao lâu sau khi nhận hàng?",
-    "expected_answer": "Trong vòng 15 ngày kể từ khi giao hàng thành công (24 giờ đối với thực phẩm tươi sống/đông lạnh).",
-    "expected_context": "Trang Returns and Refunds Policy, mục Return/Refund Eligibility"
+    "question": "Người mua có bao lâu để yêu cầu trả hàng hoặc hoàn tiền sau khi đơn giao thành công?",
+    "expected_answer": "Thông thường là 15 ngày kể từ khi đơn được cập nhật giao thành công; thực phẩm tươi sống và đông lạnh là 24 giờ.",
+    "expected_context": "Chinh sach tra hang va hoan tien.md — mục 3.2 Điều kiện yêu cầu trả hàng/hoàn tiền"
+  },
+  {
+    "question": "Những trường hợp nào có thể yêu cầu trả hàng hoặc hoàn tiền?",
+    "expected_answer": "Ví dụ: không nhận/nhận thiếu hàng, hàng giả hoặc nhái, hàng lỗi hay hư hại khi vận chuyển, giao sai sản phẩm, khác mô tả, hết hạn sử dụng, hoặc người bán đồng ý cho trả hàng.",
+    "expected_context": "Chinh sach tra hang va hoan tien.md — mục 3.1 Điều kiện yêu cầu trả hàng/hoàn tiền"
+  },
+  {
+    "question": "Đơn COD hoặc chuyển khoản cần làm gì trước khi gửi yêu cầu hoàn tiền?",
+    "expected_answer": "Tài khoản Shopee phải liên kết một phương thức nhận hoàn tiền hợp lệ, như tài khoản ngân hàng hoặc ví điện tử hợp lệ như ShopeePay.",
+    "expected_context": "Chinh sach tra hang va hoan tien.md — mục 3.3 về COD/chuyển khoản và phương thức nhận hoàn tiền"
+  },
+  {
+    "question": "Tôi có thể dùng tài khoản Shopee khác để yêu cầu trả hàng cho đơn của mình không?",
+    "expected_answer": "Không. Yêu cầu trả hàng/hoàn tiền phải được thực hiện trên chính tài khoản Shopee đã đặt đơn hàng.",
+    "expected_context": "Chinh sach tra hang va hoan tien.md — mục 3.4"
+  },
+  {
+    "question": "Người bán phải phản hồi trong bao lâu nếu không đồng ý với quyết định hoàn tiền?",
+    "expected_answer": "Người bán cần phản hồi trong vòng 2 ngày lịch kể từ khi nhận thông báo của Shopee, trừ khi Shopee quy định thời hạn khác.",
+    "expected_context": "Chinh sach tra hang va hoan tien.md — mục 5 Quyền của người bán"
   },
   {
     "question": "Shopee hỗ trợ những phương thức thanh toán nào?",
-    "expected_answer": "ShopeePay Wallet, thẻ tín dụng/ghi nợ, trả góp qua thẻ, QR Code, chuyển khoản qua app ngân hàng, thẻ NAPAS, Apple Pay, Google Pay, và COD.",
-    "expected_context": "Trang Payment Methods Overview"
+    "expected_answer": "Các phương thức được nêu gồm ShopeePay, thẻ tín dụng/ghi nợ, trả góp bằng thẻ tín dụng, QR, ứng dụng ngân hàng, thẻ NAPAS, Apple Pay, Google Pay, COD và SPayLater.",
+    "expected_context": "Phuong thuc thanh toan.md — phần tổng quan các phương thức thanh toán"
   },
   {
-    "question": "Người bán không được đăng bán những sản phẩm nào?",
-    "expected_answer": "Hàng giả/nhái, sản phẩm bất hợp pháp, vi phạm sở hữu trí tuệ, và các mặt hàng nằm trong danh sách cấm của sàn.",
-    "expected_context": "Trang Product Listing Regulations, mục Prohibited Content"
+    "question": "Làm thế nào để kiểm tra tình trạng giao hàng của đơn?",
+    "expected_answer": "Vào Tôi > Đang giao, chọn đơn cần kiểm tra; hoặc vào Tôi > Đơn mua và xem mục Thông tin vận chuyển. Có thể tra cứu bằng mã vận đơn trên trang đơn vị vận chuyển.",
+    "expected_context": "article_01.md — Cách theo dõi tình trạng vận chuyển của đơn hàng"
+  },
+  {
+    "question": "Shopee có hỗ trợ chọn giờ giao hàng hoặc cung cấp số điện thoại shipper không?",
+    "expected_answer": "Không. Shopee chưa hỗ trợ giao hàng theo giờ cụ thể và chưa hỗ trợ cung cấp số điện thoại của shipper/nhân viên giao hàng.",
+    "expected_context": "article_01.md — phần Lưu ý khi theo dõi giao hàng"
+  },
+  {
+    "question": "Làm sao đổi phương thức thanh toán cho đơn trả trước?",
+    "expected_answer": "Vào Tôi > Chờ xác nhận, chọn đơn cần đổi, chọn Đổi phương thức thanh toán, chọn phương thức mới rồi hoàn tất thanh toán và đặt hàng.",
+    "expected_context": "article_02.md — Hướng dẫn đổi phương thức thanh toán cho đơn hàng trả trước"
+  },
+  {
+    "question": "Nếu chưa nhận được hàng, tôi có cần nộp bằng chứng khi khiếu nại không?",
+    "expected_answer": "Không cần. Shopee sẽ tự động xử lý yêu cầu dựa trên hệ thống theo dõi đơn hàng.",
+    "expected_context": "article_03.md — mục 1 Khiếu nại chưa nhận được hàng"
+  },
+  {
+    "question": "Bằng chứng nào được khuyến khích nhất khi đã nhận hàng nhưng hàng bị lỗi hoặc sai mô tả?",
+    "expected_answer": "Video mở kiện hàng là bằng chứng mạnh nhất; video nên quay liên tục, rõ nét, thể hiện 6 mặt kiện hàng, mã vận đơn và tình trạng sản phẩm bên trong.",
+    "expected_context": "article_03.md — mục 2 Khiếu nại hàng có vấn đề"
+  },
+  {
+    "question": "Giới hạn dung lượng ảnh và video làm bằng chứng trả hàng/hoàn tiền là bao nhiêu?",
+    "expected_answer": "Ảnh không quá 5 MB mỗi ảnh; video không quá 100 MB mỗi video và tối đa 1 phút. Nếu được yêu cầu bổ sung bằng chứng, người mua cần bổ sung trong 24 giờ.",
+    "expected_context": "article_03.md — mục 4 Quy định về bằng chứng"
+  },
+  {
+    "question": "Sản phẩm vận chuyển từ nước ngoài được nhận biết như thế nào?",
+    "expected_answer": "Đó là sản phẩm do người bán không thuộc lãnh thổ Việt Nam bán và có gắn tag tại trang sản phẩm.",
+    "expected_context": "article_04.md — Sản phẩm được vận chuyển từ nước ngoài nghĩa là gì?"
+  },
+  {
+    "question": "Yêu cầu trả hàng/hoàn tiền thường được xử lý và hoàn tiền trong bao lâu?",
+    "expected_answer": "Yêu cầu thường được xử lý trong khoảng 3–5 ngày làm việc. Nếu được chấp nhận, tiền được hoàn trong 1–14 ngày làm việc tùy phương thức thanh toán.",
+    "expected_context": "article_05.md — phần Lưu ý: thời gian xử lý và thời gian hoàn tiền"
+  },
+  {
+    "question": "Người bán bị cấm đăng những nội dung hoặc sản phẩm nào?",
+    "expected_answer": "Quy định cấm, trong số các nội dung khác, nội dung phản động hoặc bạo lực, sản phẩm đồi trụy, thông tin bí mật, động vật/chế phẩm từ động vật, nội dung vi phạm sở hữu trí tuệ và các sản phẩm nằm trong danh sách cấm hoặc hạn chế của Shopee.",
+    "expected_context": "Quy dinh dang ban san pham.md — mục 2 Các nội dung không được phép đăng bán"
   }
 ]
