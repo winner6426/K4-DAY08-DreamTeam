@@ -1,67 +1,113 @@
-"""
-Task 5 — Semantic Search Module.
+"""Task 5 — cosine semantic search with a lightweight local HyDE expansion."""
 
-Viết module tìm kiếm ngữ nghĩa (dense retrieval) trên vector store.
+from __future__ import annotations
 
-Yêu cầu:
-    - Input: query string + top_k
-    - Output: danh sách chunks có score, sorted descending
-    - Phải tương thích với embedding model và vector store ở Task 4
-"""
+import re
+from typing import Any
+
+from .task4_chunking_indexing import get_collection, get_embedding_model
 
 
-def semantic_search(query: str, top_k: int = 10) -> list[dict]:
+def _generate_hypothetical_doc(query: str) -> str:
+    """Create a retrieval-oriented hypothetical support article for a short query.
+
+    Classic HyDE asks an LLM to draft a likely answer, then retrieves using that
+    draft's embedding. This project runs locally without an LLM/API key, so this
+    deterministic generator supplies the same useful policy-document context and
+    expands common e-commerce intents. It never claims the generated text is a
+    source of truth; only ChromaDB results are returned as evidence.
     """
-    Tìm kiếm ngữ nghĩa sử dụng vector similarity.
+    normalized_query = " ".join(query.strip().split())
+    lowered = normalized_query.casefold()
 
-    Args:
-        query: Câu truy vấn
-        top_k: Số lượng kết quả tối đa
+    intent_expansions = []
+    intent_map = {
+        ("return", "refund", "hoàn tiền", "trả hàng", "đổi trả"): (
+            "return and refund policy, eligibility conditions, return request, "
+            "required evidence, inspection, processing timeline and refund method"
+        ),
+        ("payment", "pay", "thanh toán", "chi trả"): (
+            "payment methods, supported payment options, payment failure, "
+            "payment verification, order payment and transaction security"
+        ),
+        ("order", "tracking", "delivery", "shipping", "đơn hàng", "vận chuyển", "giao hàng"): (
+            "order tracking, delivery status, shipment process, delivery issue, "
+            "estimated delivery time and customer support steps"
+        ),
+        ("seller", "listing", "product", "người bán", "đăng bán", "sản phẩm"): (
+            "seller product-listing regulations, prohibited products, listing "
+            "requirements, product information and seller responsibilities"
+        ),
+        ("privacy", "personal data", "bảo mật", "dữ liệu cá nhân", "riêng tư"): (
+            "privacy policy, personal data collection, data use, account security "
+            "and customer privacy rights"
+        ),
+    }
+    for keywords, expansion in intent_map.items():
+        if any(keyword in lowered for keyword in keywords):
+            intent_expansions.append(expansion)
 
-    Returns:
-        List of {
-            'content': str,      # Nội dung chunk
-            'score': float,      # Cosine similarity score
-            'metadata': dict     # source, doc_type, chunk_index
-        }
-        Sorted by score descending.
+    topical_context = "; ".join(intent_expansions) or (
+        "e-commerce customer-support policy, conditions, procedures, exceptions, "
+        "customer rights, seller responsibilities and official support guidance"
+    )
+    return (
+        "Hypothetical e-commerce support article. "
+        f"Customer question: {normalized_query}. "
+        f"This policy document explains {topical_context}. "
+        "It provides the official steps a customer should follow, required details "
+        "or evidence, important eligibility conditions, and relevant time limits."
+    )
+
+
+def _validate_request(query: str, top_k: int) -> str:
+    if not isinstance(query, str) or not query.strip():
+        raise ValueError("query must be a non-empty string")
+    if not isinstance(top_k, int) or isinstance(top_k, bool) or top_k < 1:
+        raise ValueError("top_k must be a positive integer")
+    return re.sub(r"\s+", " ", query).strip()
+
+
+def semantic_search(query: str, top_k: int = 10) -> list[dict[str, Any]]:
+    """Retrieve the most similar indexed chunks by cosine similarity using HyDE.
+
+    The hypothetical document—not the original query—is embedded. ChromaDB is
+    configured with cosine distance in Task 4; it is transformed to a familiar
+    similarity score via ``1 - distance`` and returned in descending order.
     """
-    # TODO: Implement semantic search
-    #
-    # Bước 1: Embed query bằng cùng model ở Task 4
-    # Bước 2: Query vector store (cosine similarity)
-    # Bước 3: Return top_k results
-    #
-    # Ví dụ với ChromaDB:
-    from .task4_chunking_indexing import get_collection, get_embedding_model
-    
-    model = get_embedding_model()
-    query_vector = model.encode(query).tolist()
-    # (Nếu Task 4 dùng embed_texts() dispatch theo EMBEDDING_PROVIDER thì gọi
-    #  embed_texts([query])[0] ở đây thay vì get_embedding_model().encode() —
-    #  để Task 5 tự động dùng đúng provider mà không cần sửa lại.)
-    
+    normalized_query = _validate_request(query, top_k)
     collection = get_collection()
+    available = collection.count()
+    if available == 0:
+        return []
+
+    hypothetical_doc = _generate_hypothetical_doc(normalized_query)
+    query_embedding = get_embedding_model().encode(
+        hypothetical_doc,
+        normalize_embeddings=True,
+    ).tolist()
     results = collection.query(
-        query_embeddings=[query_vector],
-        n_results=top_k,
+        query_embeddings=[query_embedding],
+        n_results=min(top_k, available),
         include=["documents", "metadatas", "distances"],
     )
-    
-    output = []
-    for doc, meta, dist in zip(
-        results["documents"][0], results["metadatas"][0], results["distances"][0]
+
+    ranked = []
+    for content, metadata, distance in zip(
+        results.get("documents", [[]])[0],
+        results.get("metadatas", [[]])[0],
+        results.get("distances", [[]])[0],
     ):
-        score = max(0.0, 1.0 - dist)  # cosine distance → similarity
-        output.append({"content": doc, "score": round(score, 4), "metadata": meta})
-    
-    output.sort(key=lambda x: x["score"], reverse=True)
-    return output[:top_k]
-    # raise NotImplementedError("Implement semantic_search")
+        ranked.append(
+            {
+                "content": content,
+                "score": round(max(0.0, 1.0 - float(distance)), 4),
+                "metadata": metadata,
+            }
+        )
+    return sorted(ranked, key=lambda result: result["score"], reverse=True)
 
 
 if __name__ == "__main__":
-    # Test
-    results = semantic_search("quy định trả hàng hoàn tiền shopee", top_k=5)
-    for r in results:
-        print(f"[{r['score']:.3f}] {r['content'][:100]}...")
+    for result in semantic_search("quy định trả hàng hoàn tiền", top_k=5):
+        print(f"[{result['score']:.3f}] {result['metadata']['source']}: {result['content'][:120]}...")
